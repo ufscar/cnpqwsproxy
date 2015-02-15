@@ -31,14 +31,18 @@ return {
 		-- Responses which are not SOAP envelopes
 		nonsoap = 0,
 		-- Responses with empty Envelope->Body->WSCall->return tag
-		noreturn = 5,
+		noreturn = 0,
 		-- Specific times for specific WSCall tags
 		pertag = {
-			['http://ws.servico.repositorio.cnpq.br/:getIdentificadorCNPqResponse'] = 6*months,
-			['http://ws.servico.repositorio.cnpq.br/:getIdentificadorCNPqPorUsuarioResponse'] = 6*months,
-			['http://br.cnpq.cvlattes.extracaocv/wsdl:getItensDisponiveisResponse'] = 1*months,
+			['http://ws.servico.repositorio.cnpq.br/:getIdentificadorCNPqResponse'] = 2*years,
+			['http://ws.servico.repositorio.cnpq.br/:getIdentificadorCNPqPorUsuarioResponse'] = 2*years,
+			['http://ws.servico.repositorio.cnpq.br/:getCurriculoCompactadoResponse'] = 6*months,
+			['http://ws.servico.repositorio.cnpq.br/:getCurriculoCompactadoPorUsuarioResponse'] = 6*months,
+			['http://ws.servico.repositorio.cnpq.br/:getOcorrenciaCVResponse'] = 0,
+			['http://ws.servico.repositorio.cnpq.br/:getOcorrenciaCVPorUsuarioResponse'] = 0,
+			['http://br.cnpq.cvlattes.extracaocv/wsdl:getItensDisponiveisResponse'] = 2*months,
 		},
 		-- Time for tags not listed above
-		default = 30*minutes,
+		default = 15*minutes,
 	}
 }

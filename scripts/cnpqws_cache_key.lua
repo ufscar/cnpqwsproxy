@@ -9,6 +9,12 @@ local ngx_req    = ngx.req
 local ngx_log    = ngx.log
 local ngx_DEBUG  = ngx.DEBUG
 local ngx_NOTICE = ngx.NOTICE
+local ngx_POST   = ngx.HTTP_POST
+local ngx_cap    = ngx.location.capture
+
+-- GET requests have no body, thus it makes no sense to parse them.
+-- These are usually done to get the WSDL.
+if ngx.var.request_method == 'GET' then return end
 
 -- Assemble a serialized Lua table from the xmlelem children
 local function serializetbl(xmlelem)
@@ -26,9 +32,46 @@ local function serializetbl(xmlelem)
 	return '{'..table.concat(params, ',')..'}'
 end
 
--- GET request have no body, thus it makes no sense to parse them.
--- These are usually done to get the WSDL.
-if ngx.var.request_method == 'GET' then return end
+-- Return the SOAP Body given the root XML object
+local function soapenvbody(xmlsoap)
+	return (xmlsoap
+		.tags['http://schemas.xmlsoap.org/soap/envelope/:Envelope']
+		.tags['http://schemas.xmlsoap.org/soap/envelope/:Body'])
+end
+
+-- Hook into a WSCall to insert a fake parameter containing the CV modification time
+local function mtimehook(wscall)
+	-- Request modification time back from the webservice
+	local res = ngx_cap('/srvcurriculo/WSCurriculo', {
+		method = ngx_POST,
+		body =
+[[<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Body>
+		<ns1:getDataAtualizacaoCV xmlns:ns1="http://ws.servico.repositorio.cnpq.br/">
+			<id>]]..wscall.tags.id.cdata..[[</id>
+		</ns1:getDataAtualizacaoCV>
+	</soap:Body>
+</soap:Envelope>]]
+		})
+	if res.status ~= 200 then error(pp_format(res)) end
+	-- Parse response
+	local xmlres = expat.treeparse({string=res.body, namespacesep=':'})
+	local mtime = (
+		soapenvbody(xmlres)
+		.tags['http://ws.servico.repositorio.cnpq.br/:getDataAtualizacaoCVResponse']
+		.tags['return']
+		.cdata)
+	ngx_log(ngx_DEBUG, "mtime = ", mtime)
+	-- Add a fake parameter to the original request
+	local children = wscall.children
+	children[#children+1] = {tag = "_mtime", children = {}, cdata = mtime}
+end
+
+-- Special hooks for certain webservice calls
+local wscallhooks = {
+	['http://ws.servico.repositorio.cnpq.br/:getCurriculoCompactado'] = mtimehook,
+	['http://ws.servico.repositorio.cnpq.br/:getCurriculoCompactadoPorUsuario'] = mtimehook,
+}
 
 local headers = ngx_req.get_headers()
 local contenttype = headers['content-type']
@@ -53,10 +96,14 @@ local xmlsoap = expat.treeparse({
 	encoding=charset})
 
 -- Get the tag contained inside the SOAP Body
-local wscall = (xmlsoap
-		.tags['http://schemas.xmlsoap.org/soap/envelope/:Envelope']
-		.tags['http://schemas.xmlsoap.org/soap/envelope/:Body']
-		.children[1])
+local wscall = soapenvbody(xmlsoap).children[1]
+
+-- Check if any hook exists for this WSCall
+local hook = wscallhooks[wscall.tag]
+if hook then
+	local ok, err = pcall(hook, wscall)
+	if not ok then ngx_log(ngx_NOTICE, err) end
+end
 
 -- The cache key is formed by the tag name, that indicates which
 -- webservice call is being made, and by a serialized Lua table
