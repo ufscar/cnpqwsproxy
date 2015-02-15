@@ -1,0 +1,12 @@
+[submodule "3rdparty/expat"]
+	path = 3rdparty/expat
+	url = https://github.com/luapower/expat
+[submodule "3rdparty/glue"]
+	path = 3rdparty/glue
+	url = https://github.com/luapower/glue
+[submodule "3rdparty/pp"]
+	path = 3rdparty/pp
+	url = https://github.com/luapower/pp
+[submodule "3rdparty/lua-resty-http"]
+	path = 3rdparty/lua-resty-http
+	url = https://github.com/pintsized/lua-resty-http
