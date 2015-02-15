@@ -1,0 +1,23 @@
+--- ngx_openresty-1.7.7.2/bundle/nginx-1.7.7/src/event/ngx_event_openssl.c.orig	2015-02-14 18:45:08.713471416 -0200
++++ ngx_openresty-1.7.7.2/bundle/nginx-1.7.7/src/event/ngx_event_openssl.c	2015-02-14 18:52:11.089479943 -0200
+@@ -2873,7 +2873,7 @@
+         goto failed;
+     }
+ 
+-    if (X509_check_host(cert, (char *) name->data, name->len, 0, NULL) != 1) {
++    if (X509_check_host(cert, (char *) name->data, name->len, X509_CHECK_FLAG_ALWAYS_CHECK_SUBJECT, NULL) != 1) {
+         ngx_log_debug0(NGX_LOG_DEBUG_EVENT, c->log, 0,
+                        "X509_check_host(): no match");
+         goto failed;
+@@ -2928,7 +2928,10 @@
+                        "SSL subjectAltName: no match");
+ 
+         GENERAL_NAMES_free(altnames);
+-        goto failed;
++        /* Line below is commented in order to reproduce
++         * X509_CHECK_FLAG_ALWAYS_CHECK_SUBJECT behavior
++         */
++        //goto failed;
+     }
+ 
+     /*
