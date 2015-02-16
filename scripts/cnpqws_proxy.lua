@@ -86,7 +86,8 @@ local function proxy_response(response)
 		end
 	end
 
-	local body = response:read_body()
+	local body, err = response:read_body()
+	if not body then error(err) end
 	local accelexpires
 	if ngx.var.args == 'wsdl' then
 		body = body:gsub(proxyconf.wsdl.origpattern, proxyconf.wsdl.replacewith)

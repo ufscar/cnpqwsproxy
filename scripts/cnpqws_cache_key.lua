@@ -41,18 +41,24 @@ end
 
 -- Hook into a WSCall to insert a fake parameter containing the CV modification time
 local function mtimehook(wscall)
+	local id = wscall.tags.id and wscall.tags.id.cdata or
+		wscall.tags.request.tags.parametros.tags.idCNPq.cdata
+	ngx_log(ngx_DEBUG, "id = ", id)
 	-- Request modification time back from the webservice
 	local res = ngx_cap('/srvcurriculo/WSCurriculo', {
 		method = ngx_POST,
-		body =
-[[<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-	<soap:Body>
-		<ns1:getDataAtualizacaoCV xmlns:ns1="http://ws.servico.repositorio.cnpq.br/">
-			<id>]]..wscall.tags.id.cdata..[[</id>
-		</ns1:getDataAtualizacaoCV>
-	</soap:Body>
-</soap:Envelope>]]
-		})
+		body = [[<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+				<soap:Body>
+					<ns1:getDataAtualizacaoCV xmlns:ns1="http://ws.servico.repositorio.cnpq.br/">
+						<id>]]..id..[[</id>
+					</ns1:getDataAtualizacaoCV>
+				</soap:Body>
+			</soap:Envelope>]],
+		vars = {
+			-- access phase is not run in subrequest, so precompute the cache key
+			body_cache_key = [[http://ws.servico.repositorio.cnpq.br/:getDataAtualizacaoCV|{['id']=']]..id..[['}]],
+		}
+	})
 	if res.status ~= 200 then error(pp_format(res)) end
 	-- Parse response
 	local xmlres = expat.treeparse({string=res.body, namespacesep=':'})
@@ -71,6 +77,7 @@ end
 local wscallhooks = {
 	['http://ws.servico.repositorio.cnpq.br/:getCurriculoCompactado'] = mtimehook,
 	['http://ws.servico.repositorio.cnpq.br/:getCurriculoCompactadoPorUsuario'] = mtimehook,
+	['http://br.cnpq.cvlattes.extracaocv/wsdl:extrairItens'] = mtimehook,
 }
 
 local headers = ngx_req.get_headers()

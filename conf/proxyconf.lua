@@ -41,6 +41,7 @@ return {
 			['http://ws.servico.repositorio.cnpq.br/:getOcorrenciaCVResponse'] = 0,
 			['http://ws.servico.repositorio.cnpq.br/:getOcorrenciaCVPorUsuarioResponse'] = 0,
 			['http://br.cnpq.cvlattes.extracaocv/wsdl:getItensDisponiveisResponse'] = 2*months,
+			['http://br.cnpq.cvlattes.extracaocv/wsdl:extrairItensResponse'] = 6*months,
 		},
 		-- Time for tags not listed above
 		default = 15*minutes,
