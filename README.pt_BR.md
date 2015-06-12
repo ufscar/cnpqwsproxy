@@ -45,9 +45,9 @@ Por favor, siga estas instruções para compilar e instalar o OpenResty:
 
 ## Instalando o cnpqwsproxy
 
-* Gere uma chave privada e o certificado correspondente para o servidor TLS embutido. Edite o Makefile para mudar as informações do certificado passadas ao openssl por meio da opção `-subj`. Depois chame:
+* Gere uma chave privada e o certificado correspondente para o servidor TLS embutido. Você pode mudar as informações de certificado passadas ao openssl por meio da variável de ambiente `TLS_CERT_SUBJ`. Depois chame:
 
-  `make conf/tls/private/cnpqwsproxy.crt`
+  `make tls-conf`
 
 * Edite o `conf/proxyconf.lua`. A opção `wsdl.replacewith` contém uma URL cujo domínio deve ser modificado para o domínio da sua instituição.
 

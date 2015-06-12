@@ -45,9 +45,9 @@ Please follow these instructions to build and install OpenResty:
 
 ## Installing cnpqwsproxy
 
-* Generate a private key and the corresponding certificate for the embedded TLS server. Edit the Makefile to change the certificate information provided to openssl through the `-subj` option. Then call:
+* Generate a private key and the corresponding certificate for the embedded TLS server. You may provide certificate information to openssl through the `TLS_CERT_SUBJ` environment variable. Then call:
 
-  `make conf/tls/private/cnpqwsproxy.crt`
+  `make tls-conf`
 
 * Edit `conf/proxyconf.lua`. The `wsdl.replacewith` option contains an URL whose domain should be changed to your institution's domain.
 
