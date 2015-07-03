@@ -1,5 +1,5 @@
---- ngx_openresty-1.7.10.1/bundle/nginx-1.7.10/src/event/ngx_event_openssl.c.orig	2015-02-10 12:33:34.000000000 -0200
-+++ ngx_openresty-1.7.10.1/bundle/nginx-1.7.10/src/event/ngx_event_openssl.c	2015-03-01 17:11:49.367872282 -0300
+--- ngx_openresty-1.7.10.2/bundle/nginx-1.7.10/src/event/ngx_event_openssl.c.orig	2015-02-10 12:33:34.000000000 -0200
++++ ngx_openresty-1.7.10.2/bundle/nginx-1.7.10/src/event/ngx_event_openssl.c	2015-03-01 17:11:49.367872282 -0300
 @@ -2930,7 +2930,7 @@
          goto failed;
      }
