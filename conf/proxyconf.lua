@@ -12,7 +12,7 @@ return {
 		-- Timeouts (in ms) for connecting and waiting a response from the server
 		timeout = {
 			connect  = 500,
-			response = 2000,
+			response = 5000,
 		},
 	},
 	-- Configuration of the WSDL filter
