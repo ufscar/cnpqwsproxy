@@ -30,7 +30,7 @@ Por favor, siga estas instruções para compilar e instalar o OpenResty:
 * Aplique nosso patch para contornar problemas (incompatibilidade com a RFC2818) com os certificados atualmente em uso pelo `servicosweb.cnpq.br`:
 
   `cd ngx_openresty-*`
-  
+
   `patch -p1 -i ../cnpqwsproxy/patches/openresty-*_x509_check_flag_always_check_subject.diff`
 
 * Compile e instale:
@@ -45,9 +45,15 @@ Por favor, siga estas instruções para compilar e instalar o OpenResty:
 
 ## Instalando o cnpqwsproxy
 
+* Inicialize os submódulos do repositório:
+
+  `git submodule init && git submodule update`
+
 * Gere uma chave privada e o certificado correspondente para o servidor TLS embutido. Você pode mudar as informações de certificado passadas ao openssl por meio da variável de ambiente `TLS_CERT_SUBJ`. Depois chame:
 
   `make tls-conf`
+
+* Se você preferir usar um certificado TLS válido, assine o `conf/tls/private/cnpqwsproxy.csr` usando sua autoridade certificadora (AC) preferida e sobrescreva `conf/tls/private/cnpqwsproxy.crt` com o certificado fornecido pela AC.
 
 * Edite o `conf/proxyconf.lua`. A opção `wsdl.replacewith` contém uma URL cujo domínio deve ser modificado para o domínio da sua instituição.
 

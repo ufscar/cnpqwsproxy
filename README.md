@@ -30,7 +30,7 @@ Please follow these instructions to build and install OpenResty:
 * Apply our patch to workaround issues (RFC2818 non-compliance) with the certificate currently used by `servicosweb.cnpq.br`:
 
   `cd ngx_openresty-*`
-  
+
   `patch -p1 -i ../cnpqwsproxy/patches/openresty-*_x509_check_flag_always_check_subject.diff`
 
 * Compile and install it:
@@ -45,9 +45,15 @@ Please follow these instructions to build and install OpenResty:
 
 ## Installing cnpqwsproxy
 
+* Initialize the repository submodules:
+
+  `git submodule init && git submodule update`
+
 * Generate a private key and the corresponding certificate for the embedded TLS server. You may provide certificate information to openssl through the `TLS_CERT_SUBJ` environment variable. Then call:
 
   `make tls-conf`
+
+* If you want to use a valid TLS certificate, sign `conf/tls/private/cnpqwsproxy.csr` using your preferred CA and override `conf/tls/private/cnpqwsproxy.crt` with the certificate provided by the CA.
 
 * Edit `conf/proxyconf.lua`. The `wsdl.replacewith` option contains an URL whose domain should be changed to your institution's domain.
 
