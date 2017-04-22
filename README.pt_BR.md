@@ -77,7 +77,7 @@ Por favor, siga estas instruções para compilar e instalar o OpenResty:
 
    ```python
    In [1]: import suds
-   In [2]: c = suds.client.Client('https://your-domain:7443/srvcurriculo/WSCurriculo?wsdl')
+   In [2]: c = suds.client.Client('https://seu-dominio:7443/srvcurriculo/WSCurriculo?wsdl')
    In [3]: c.service.getDataAtualizacaoCV(id='9110045494449064')  # in memoriam
    Out[3]: 27/05/2004 11:39:54
    ```
@@ -92,9 +92,13 @@ Por favor, siga estas instruções para compilar e instalar o OpenResty:
 
   `git clone https://github.com/nitmateriais/cxf-repl.git`
 
-* Compile e chame o REPL:
+* Mude os arquivos WSDL para eles apontarem para o seu domínio:
 
   `cd cxf-repl`
+
+  `sed -i 's/cnpqwsproxy.ufscar.br/seu-dominio/g' src/main/resources/wsdl/*.wsdl`
+
+* Compile e chame o REPL:
 
   `make repl`
 

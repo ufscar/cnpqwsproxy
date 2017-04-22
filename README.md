@@ -92,9 +92,13 @@ Please follow these instructions to build and install OpenResty:
 
   `git clone https://github.com/nitmateriais/cxf-repl.git`
 
-* Compile and call the REPL:
+* Change WSDL files to point to your own domain:
 
   `cd cxf-repl`
+
+  `sed -i 's/cnpqwsproxy.ufscar.br/your-domain/g' src/main/resources/wsdl/*.wsdl`
+
+* Compile and call the REPL:
 
   `make repl`
 
