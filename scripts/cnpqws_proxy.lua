@@ -42,7 +42,7 @@ local function calctime(body)
 	end
 
 	local wsret = wscall.tags['return']
-	if not wsret.cdata and #wsret.children==0 then
+	if not wsret or (not wsret.cdata and #wsret.children==0) then
 		return expirytime.noreturn
 	end
 
