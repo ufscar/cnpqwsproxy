@@ -5,8 +5,16 @@ all:
 	@echo "please read the Makefile to see the available targets"
 	@exit 1
 
-conf/tls/ICP-V2c.pem:
-	curl -k https://www.downloadcertisign.com.br/site/Hierarquias/ICP_Brasil/hierarquia-completa/ICP-V2c.p7b | openssl pkcs7 -inform der -print_certs -out $@
+conf/tls/serpro_final_ssl.pem:
+	for url in \
+		https://repositorio.serpro.gov.br/docs/icpbrasilv5.crt \
+		https://repositorio.serpro.gov.br/docs/acserprov4.crt \
+		https://acraiz.icpbrasil.gov.br/credenciadas/SERPRO/v5/Autoridade_Certificadora_do_Serpro_Final_SSL.crt; \
+		do \
+			curl -k $$url | openssl x509 -text | sed -n 's,^[[:space:]]*,,;/^\(Issuer\|Subject\):/p'; \
+			curl -k $$url; \
+			echo; \
+		done > "$@"
 
 tls-conf: conf/tls/private/cnpqwsproxy.crt conf/tls/dh2048.pem
 

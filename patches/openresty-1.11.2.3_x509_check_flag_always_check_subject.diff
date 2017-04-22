@@ -1,7 +1,7 @@
-diff -ru openresty-1.9.7.3.orig/bundle/nginx-1.9.7/src/event/ngx_event_openssl.c openresty-1.9.7.3/bundle/nginx-1.9.7/src/event/ngx_event_openssl.c
---- openresty-1.9.7.3.orig/bundle/nginx-1.9.7/src/event/ngx_event_openssl.c	2016-01-29 08:48:16.797204117 -0200
-+++ openresty-1.9.7.3/bundle/nginx-1.9.7/src/event/ngx_event_openssl.c	2016-01-29 08:48:44.734074858 -0200
-@@ -2956,7 +2956,7 @@
+diff -ru openresty-1.11.2.3.orig/bundle/nginx-1.11.2/src/event/ngx_event_openssl.c openresty-1.11.2.3/bundle/nginx-1.11.2/src/event/ngx_event_openssl.c
+--- openresty-1.11.2.3.orig/bundle/nginx-1.11.2/src/event/ngx_event_openssl.c	2017-04-22 10:20:15.973316360 -0300
++++ openresty-1.11.2.3/bundle/nginx-1.11.2/src/event/ngx_event_openssl.c	2017-04-22 10:20:33.553120466 -0300
+@@ -3093,7 +3093,7 @@
          goto failed;
      }
  
@@ -10,7 +10,7 @@ diff -ru openresty-1.9.7.3.orig/bundle/nginx-1.9.7/src/event/ngx_event_openssl.c
          ngx_log_debug0(NGX_LOG_DEBUG_EVENT, c->log, 0,
                         "X509_check_host(): no match");
          goto failed;
-@@ -3011,7 +3011,10 @@
+@@ -3148,7 +3148,10 @@
                         "SSL subjectAltName: no match");
  
          GENERAL_NAMES_free(altnames);
@@ -22,3 +22,4 @@ diff -ru openresty-1.9.7.3.orig/bundle/nginx-1.9.7/src/event/ngx_event_openssl.c
      }
  
      /*
+Somente em openresty-1.11.2.3.orig/bundle/nginx-1.11.2/src/event: ngx_event_openssl.c.orig
