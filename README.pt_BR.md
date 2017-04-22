@@ -53,7 +53,7 @@ Por favor, siga estas instruções para compilar e instalar o OpenResty:
 
   `make tls-conf`
 
-* Se você preferir usar um certificado TLS válido, assine o `conf/tls/private/cnpqwsproxy.csr` usando sua autoridade certificadora (AC) preferida e sobrescreva `conf/tls/private/cnpqwsproxy.crt` com o certificado fornecido pela AC.
+* Se você quiser usar um certificado TLS válido, assine o `conf/tls/private/cnpqwsproxy.csr` usando sua autoridade certificadora (AC) preferida e sobrescreva `conf/tls/private/cnpqwsproxy.crt` com o certificado fornecido pela AC.
 
 * Edite o `conf/proxyconf.lua`. A opção `wsdl.replacewith` contém uma URL cujo domínio deve ser modificado para o domínio da sua instituição.
 
