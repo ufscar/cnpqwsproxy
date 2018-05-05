@@ -83,20 +83,24 @@ local wscallhooks = {
 local headers = ngx_req.get_headers()
 local contenttype = headers['content-type']
 
--- As far as we know, the server only accepts POST requests containing XML data.
--- Anyway, if it is not the case, we return and let the nginx config do the fallback.
-if not contenttype or not contenttype:match('^text/xml') then
-	ngx_log(ngx_NOTICE, 'Unsupported content-type: ', pp_format(contenttype))
-	return
-end
-
 -- Try to get the charset from the Content-Type header. If not specified, the
 -- variable will be nil, and thus ignored by expat, which will use the default
 -- charset (utf-8), or the one specified in the <?xml ?> tag, if present.
 local charset = contenttype:match(';%s*charset=([^;]+)')
 
--- Parse the request body
+-- Read the request body
 ngx_req.read_body()
+local request_body = ngx_req.get_body_data()
+
+-- As far as we know, the server only accepts POST requests containing XML data.
+-- Anyway, if it is not the case, fallback to use the request body as a cache key.
+if not contenttype or not contenttype:match('^text/xml') then
+	ngx_log(ngx_NOTICE, 'Unsupported content-type: ', pp_format(contenttype))
+	ngx.var.body_cache_key = request_body
+	return
+end
+
+-- Parse the request body
 local xmlsoap = expat.treeparse({
 	string=ngx_req.get_body_data(),
 	namespacesep=':',
