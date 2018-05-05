@@ -1,4 +1,5 @@
 #!/bin/bash
+PATH="/usr/local/openresty/nginx/sbin:$PATH"
 case "$1" in
 	start)
 		LUA_PATH="?;?.lua"

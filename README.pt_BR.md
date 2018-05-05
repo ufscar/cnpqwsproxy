@@ -19,29 +19,7 @@ Outra meta deste projeto é servir como um bom exemplo de como criar caches inte
 
 O [OpenResty](http://openresty.org) é uma plataforma composta pelo [nginx](http://nginx.org), [LuaJIT](http://luajit.org),  e alguns módulos de extensão, em cima da qual nosso proxy foi desenvolvido.
 
-Por favor, siga estas instruções para compilar e instalar o OpenResty:
-
-* [Baixe](http://openresty.org/#Download) a última versão do OpenResty.
-
-* Descompacte:
-
-  `tar -zxvf ngx_openresty-*.tar.gz`
-
-* Aplique nosso patch para contornar problemas (incompatibilidade com a RFC2818) com os certificados atualmente em uso pelo `servicosweb.cnpq.br`:
-
-  `cd ngx_openresty-*`
-
-  `patch -p1 -i ../cnpqwsproxy/patches/openresty-*_x509_check_flag_always_check_subject.diff`
-
-* Compile e instale:
-
-  `./configure --with-pcre-jit --with-ipv6`
-
-  `make && sudo make install`
-
-* Adicione o diretório de instalação do OpenResty ao seu PATH. Por exemplo, acrescente a linha a seguir ao final do seu arquivo `~/.bashrc`:
-
-  `export PATH=/usr/local/openresty/nginx/sbin:$PATH`
+Por favor, siga [as instruções oficiais](http://openresty.org/en/linux-packages.html) do OpenResty para instalar os pacotes para a sua distribuição Linux.
 
 ## Instalando o cnpqwsproxy
 

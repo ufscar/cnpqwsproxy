@@ -19,29 +19,7 @@ This project also aims to serve as a good example on how to create smart SOAP ca
 
 [OpenResty](http://openresty.org) is a platform build around [nginx](http://nginx.org), [LuaJIT](http://luajit.org), and some extension modules, on the top of which our proxy was developed.
 
-Please follow these instructions to build and install OpenResty:
-
-* [Download](http://openresty.org/#Download) the latest OpenResty release.
-
-* Unpack it:
-
-  `tar -zxvf ngx_openresty-*.tar.gz`
-
-* Apply our patch to workaround issues (RFC2818 non-compliance) with the certificate currently used by `servicosweb.cnpq.br`:
-
-  `cd ngx_openresty-*`
-
-  `patch -p1 -i ../cnpqwsproxy/patches/openresty-*_x509_check_flag_always_check_subject.diff`
-
-* Compile and install it:
-
-  `./configure --with-pcre-jit --with-ipv6`
-
-  `make && sudo make install`
-
-* Add the OpenResty installation directory to your PATH. For example, append this line to the end of your `~/.bashrc` file:
-
-  `export PATH=/usr/local/openresty/nginx/sbin:$PATH`
+Please follow [the instructions here](http://openresty.org/en/linux-packages.html) to install official OpenResty packages for your distro.
 
 ## Installing cnpqwsproxy
 
