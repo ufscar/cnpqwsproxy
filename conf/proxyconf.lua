@@ -20,7 +20,7 @@ return {
 		-- Original URL present in the WSDL file.
 		-- Please escape dots (.) with percent signs (%),
 		-- as this is a Lua pattern.
-		origpattern = 'http://10%.0%.2%.%d+:8080/',
+		origpattern = 'http://%d+%.%d+%.%d+%.%d+:8080/',
 		-- Base URL of this proxy
 		replacewith = 'https://cnpqwsproxy.ufscar.br:7443/',
 	},
