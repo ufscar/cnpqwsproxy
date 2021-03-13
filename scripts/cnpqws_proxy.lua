@@ -13,9 +13,14 @@ local PORT = proxyconf.upstream.port
 local CONN_TIMEOUT = proxyconf.upstream.timeout.connect
 local RESP_TIMEOUT = proxyconf.upstream.timeout.response
 
-local str_lower  = string.lower
-local ngx_log    = ngx.log
-local ngx_DEBUG  = ngx.DEBUG
+local str_lower = string.lower
+local ngx_req = ngx.req
+local ngx_req_get_method = ngx_req.get_method
+local ngx_req_get_headers = ngx_req.get_headers
+local ngx_re_gsub = ngx.re.gsub
+local ngx_var = ngx.var
+local ngx_log = ngx.log
+local ngx_DEBUG = ngx.DEBUG
 local ngx_NOTICE = ngx.NOTICE
 
 -- Parse response body and establish an expiry time
@@ -102,11 +107,18 @@ end
 
 local httpc = http.new()
 httpc:set_timeout(CONN_TIMEOUT)
-local ok, err = httpc:connect(HOST, PORT)
-if not ok then error(err) end
-local ok, err = httpc:ssl_handshake(nil, HOST, true)
+local ok, err = httpc:connect({ scheme = "http", host = HOST, port = 80, ssl_server_name = HOST })
 if not ok then error(err) end
 
+local headers = ngx_req_get_headers()
+headers['host'] = HOST .. ':' .. PORT
 httpc:set_timeout(RESP_TIMEOUT)
-proxy_response(httpc:proxy_request())
+local res, err = httpc:request({
+        method = ngx_req_get_method(),
+        path = ngx_re_gsub(ngx_var.uri, "\\s", "%20", "jo") .. ngx_var.is_args .. (ngx_var.query_string or ""),
+        body = httpc:get_client_body_reader(),
+        headers = headers,
+    })
+if not res then error(err) end
+proxy_response(res)
 httpc:set_keepalive()
