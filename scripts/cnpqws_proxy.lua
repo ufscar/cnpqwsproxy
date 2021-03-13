@@ -107,7 +107,7 @@ end
 
 local httpc = http.new()
 httpc:set_timeout(CONN_TIMEOUT)
-local ok, err = httpc:connect({ scheme = "http", host = HOST, port = 80, ssl_server_name = HOST })
+local ok, err = httpc:connect({ scheme = "https", host = HOST, port = PORT, ssl_server_name = HOST })
 if not ok then error(err) end
 
 local headers = ngx_req_get_headers()
