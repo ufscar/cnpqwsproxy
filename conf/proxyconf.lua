@@ -20,9 +20,9 @@ return {
 		-- Original URL present in the WSDL file.
 		-- Please escape dots (.) with percent signs (%),
 		-- as this is a Lua pattern.
-		origpattern = "location='[^']+'",
+		origpattern = "location='https?://[^/']+",
 		-- Base URL of this proxy
-		replacewith = "location='https://cnpqwsproxy.ufscar.br:7443/'",
+		replacewith = "location='https://cnpqwsproxy.ufscar.br:7443",
 	},
 	-- Configuration of expiry times
 	expirytime = {
