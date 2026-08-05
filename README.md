@@ -37,6 +37,8 @@ Please follow [the instructions here](http://openresty.org/en/linux-packages.htm
 
   If desired, also customize any caching times in this file. Please note that although curricula are cached for 6 months by default, the `mtimehook` defined in `scripts/cnpqws_cache_key.lua` implies that the modification time will always be looked up to check whether a new version of a curriculum is available. The modification time is cached, by default, only for 15 minutes.
 
+  The upstream TLS connection is verified against the bundled GlobalSign Root R46 certificate in `conf/tls/globalsign_root_r46.pem`, required by the current CNPq certificate chain.
+
 * Add the IP address ranges which are allowed to access the proxy to the `conf/cnpqws_allowed_clients.conf` file. By default, the proxy only allows requests from localhost.
 
 * Start the proxy application:

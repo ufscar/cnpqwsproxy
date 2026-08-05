@@ -37,6 +37,8 @@ Por favor, siga [as instruções oficiais](http://openresty.org/en/linux-package
 
   Caso desejado, customize também os tempos de cache neste arquivo. Por favor note que apesar de os currículos terem um cache de 6 meses por padrão, o interceptador `mtimehook` definido em `scripts/cnpqws_cache_key.lua` implica que a data/hora de atualização sempre será buscada para verificar se uma nova versão de um currículo está disponível. A data/hora de modificação tem um cache padrão de somente 15 minutos.
 
+  A conexão TLS com o upstream é verificada usando o certificado GlobalSign Root R46 incluído em `conf/tls/globalsign_root_r46.pem`, exigido pela cadeia atual de certificados do CNPq.
+
 * Adicione as faixas de endereços IP cujo acesso ao proxy deve ser permitido ao arquivo `conf/cnpqws_allowed_clients.conf`. Por padrão, o proxy só aceita requisições de localhost.
 
 * Inicie o aplicativo do proxy:
